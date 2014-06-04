@@ -25,35 +25,6 @@ type public RPCService() =
 
     member this.Invoke (rpc:RpcRequest): RpcResponse =
             match rpc.Params with
-//            | :? ICollection as p when p.Count = 2 ->                     
-//                    let hasHandler, both = this.handlers2Param.TryGetCachedValue rpc.Method                    
-//                    if hasHandler then
-//                        let (handle, meta) = both                       
-//                        let paramArray = p :?> array<System.Object>
-//                        if paramArray.Length = meta.ParameterCount then
-//                            try
-//                                let results = handle paramArray.[0] paramArray.[1]
-//                                new RpcResponse(results, rpc.Id)
-//                            with
-//                                | _ as ex -> 
-//                                    new RpcResponse(new RpcException(-32603,"Internal Error", ex),rpc.Id)
-//                        else new RpcResponse (new RpcException(-32602,"Invalid params","The number of Parameters could not be counted"),rpc.Id)
-//                    else new RpcResponse(new RpcException(-32601, "Method not found", "The method does not exist / is not available."), rpc.Id )
-//            | :? ICollection as p when p.Count = 1 ->                     
-//                    let hasHandler, both = this.handlers1Param.TryGetCachedValue rpc.Method
-//                    
-//                    if hasHandler then
-//                        let (handle, meta) = both                       
-//                        let paramArray = p :?> array<System.Object>
-//                        if paramArray.Length = meta.ParameterCount then
-//                            try
-//                                let results = handle (paramArray.[0])
-//                                new RpcResponse(results, rpc.Id)
-//                            with
-//                                | _ as ex -> 
-//                                    new RpcResponse(new RpcException(-32603,"Internal Error", ex),rpc.Id)
-//                        else new RpcResponse (new RpcException(-32602,"Invalid params","The number of Parameters could not be counted"),rpc.Id)
-//                    else new RpcResponse(new RpcException(-32601, "Method not found", "The method does not exist / is not available."), rpc.Id )                            
             | :? ICollection  as p ->                     
                     let hasHandler, (handle, meta) = this.handlers.TryGetCachedValue rpc.Method
                     if hasHandler = false then
