@@ -25,35 +25,6 @@ type public RPCService() =
 
     member this.Invoke (rpc:RpcRequest): RpcResponse =
             match rpc.Params with
-//            | :? ICollection as p when p.Count = 2 ->                     
-//                    let hasHandler, both = this.handlers2Param.TryGetCachedValue rpc.Method                    
-//                    if hasHandler then
-//                        let (handle, meta) = both                       
-//                        let paramArray = p :?> array<System.Object>
-//                        if paramArray.Length = meta.ParameterCount then
-//                            try
-//                                let results = handle paramArray.[0] paramArray.[1]
-//                                new RpcResponse(results, rpc.Id)
-//                            with
-//                                | _ as ex -> 
-//                                    new RpcResponse(new RpcException(-32603,"Internal Error", ex),rpc.Id)
-//                        else new RpcResponse (new RpcException(-32602,"Invalid params","The number of Parameters could not be counted"),rpc.Id)
-//                    else new RpcResponse(new RpcException(-32601, "Method not found", "The method does not exist / is not available."), rpc.Id )
-//            | :? ICollection as p when p.Count = 1 ->                     
-//                    let hasHandler, both = this.handlers1Param.TryGetCachedValue rpc.Method
-//                    
-//                    if hasHandler then
-//                        let (handle, meta) = both                       
-//                        let paramArray = p :?> array<System.Object>
-//                        if paramArray.Length = meta.ParameterCount then
-//                            try
-//                                let results = handle (paramArray.[0])
-//                                new RpcResponse(results, rpc.Id)
-//                            with
-//                                | _ as ex -> 
-//                                    new RpcResponse(new RpcException(-32603,"Internal Error", ex),rpc.Id)
-//                        else new RpcResponse (new RpcException(-32602,"Invalid params","The number of Parameters could not be counted"),rpc.Id)
-//                    else new RpcResponse(new RpcException(-32601, "Method not found", "The method does not exist / is not available."), rpc.Id )                            
             | :? ICollection  as p ->                     
                     let hasHandler, (handle, meta) = this.handlers.TryGetCachedValue rpc.Method
                     if hasHandler = false then
@@ -66,7 +37,7 @@ type public RPCService() =
                             try
                                 let results = handle.DynamicInvoke(paramArray)
                                 new RpcResponse(results, rpc.Id)
-                            with | _ as ex -> new RpcResponse(new RpcException(-32603,"Internal Error", ex),rpc.Id)                               
+                            with | _ as ex -> new RpcResponse(new RpcException(-32603,"Internal Error","See Inner Exception for details", ex),rpc.Id)                               
             | _  -> new RpcResponse (new RpcException(-32602,"Invalid params","The number of Parameters could not be counted"),rpc.Id)
 
     member this.Invoke (rpcs:seq<RpcRequest>) = rpcs |> Seq.map(this.Invoke)
@@ -88,7 +59,7 @@ type public RPCService() =
                 let p1,p2,p3 = rpc.Params
                 let results = handle p1 p2 p3
                 new RpcResponse(results, rpc.Id)
-            with | _ as ex -> new RpcResponse(new RpcException(-32603,"Internal Error",ex),rpc.Id)
+            with | _ as ex -> new RpcResponse(new RpcException(-32603,"Internal Error","See Inner Exception for details",ex),rpc.Id)
         else this.Invoke (RpcRequest(rpc.Method,rpc.Params:>Object,rpc.Id))                          // Fallback to the boxing/unboxing Invoke
     
     member this.Invoke<'T1, 'T2> (rpc:RpcRequest<'T1 * 'T2>) : RpcResponse =
@@ -99,7 +70,7 @@ type public RPCService() =
                 let p1,p2 = rpc.Params
                 let results = handle p1 p2
                 new RpcResponse(results, rpc.Id)
-            with | _ as ex -> new RpcResponse(new RpcException(-32603,"Internal Error",ex),rpc.Id)
+            with | _ as ex -> new RpcResponse(new RpcException(-32603,"Internal Error","See Inner Exception for details",ex),rpc.Id)
         else this.Invoke (RpcRequest(rpc.Method,rpc.Params:>Object,rpc.Id))                          // Fallback to the boxing/unboxing Invoke
 
     member this.Invoke<'T1> (rpc : RpcRequest<'T1>) : RpcResponse =
@@ -109,7 +80,7 @@ type public RPCService() =
                 let (meta, handle) = metaAndHandle
                 let results = handle rpc.Params
                 new RpcResponse(results, rpc.Id)
-            with | _ as ex -> new RpcResponse(new RpcException(-32603,"Internal Error",ex),rpc.Id)
+            with | _ as ex -> new RpcResponse(new RpcException(-32603,"Internal Error","See Inner Exception for details",ex),rpc.Id)
         else this.Invoke (RpcRequest(rpc.Method,rpc.Params:>Object,rpc.Id))                          // Fallback to the boxing/unboxing Invoke
     
         member this.Invoke<'T1, 'T2> (fnIdx, rpc:RpcRequest<'T1 * 'T2>) : RpcResponse = 
@@ -118,14 +89,14 @@ type public RPCService() =
             let p1,p2 = rpc.Params
             let results = handle p1 p2
             new RpcResponse(results, rpc.Id)
-        with | _ as ex -> new RpcResponse(new RpcException(-32603,"Internal Error",ex),rpc.Id)
+        with | _ as ex -> new RpcResponse(new RpcException(-32603,"Internal Error","See Inner Exception for details",ex),rpc.Id)
 
     member this.Invoke<'T1> (fnIdx, rpc:RpcRequest<'T1>) : RpcResponse = 
         let meta, handle = this.handlersListBag.TryGetValue<RpcDefinition*('T1->Object)> fnIdx
         try
             let results = handle rpc.Params
             new RpcResponse(results, rpc.Id)
-        with | _ as ex -> new RpcResponse(new RpcException(-32603,"Internal Error",ex),rpc.Id)
+        with | _ as ex -> new RpcResponse(new RpcException(-32603,"Internal Error","See Inner Exception for details",ex),rpc.Id)
             
     // creates a method that wraps the passed in method that takes object parameters and casts them to the real type
     // essentially given (fun ('a 'b 'c)->d) -> (fun (obj obj obj)->d) it does this by wrapping the passed in function with another one
