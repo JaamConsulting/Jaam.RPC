@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>Jaam.Rpc</id>
+    <version>$version$</version>
+    <title>Jaam.Rpc</title>
+    <authors>Austin Harris, Martin Johnson</authors>
+    <owners />
+    <licenseUrl>https://github.com/JaamConsulting/Jaam.RPC/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/JaamConsulting/Jaam.RPC</projectUrl>
+    <iconUrl></iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Basic framework for method registration and dispatching</description>
+    <summary>Jaam.Rpc is a framework for building RPC servers. It does not include any protocol or serialization library.</summary>
+    <releaseNotes></releaseNotes>
+    <language>en-US</language>
+    <tags>Jaam Rpc</tags>
+    <dependencies>
+      <group targetFramework=".NETFramework4.0">
+        <dependency id="FSharp.Core.3" version="4.3.0.0" />
+      </group>
+    </dependencies>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="System" targetFramework=".NETFramework4.0" />
+    </frameworkAssemblies>
+  </metadata>
+  <files>
+    <file src="bin\Release\Jaam.Rpc.dll" target="lib\net40" />
+    <file src="bin\Release\Jaam.Collections.dll" target="lib\net40" />
+  </files>
+</package>

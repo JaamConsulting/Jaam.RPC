@@ -60,6 +60,7 @@
     <Compile Include="RpcDefinition.fs" />
     <Compile Include="RpcService.fs" />
     <Compile Include="RpcServiceBase.fs" />
+    <None Include="jaam.rpc.nuspec" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />
