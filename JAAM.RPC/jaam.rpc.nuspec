@@ -7,8 +7,7 @@
     <authors>Austin Harris, Martin Johnson</authors>
     <owners />
     <licenseUrl>https://github.com/JaamConsulting/Jaam.RPC/blob/master/LICENSE</licenseUrl>
-    <projectUrl>https://github.com/JaamConsulting/Jaam.RPC</projectUrl>
-    <iconUrl></iconUrl>
+    <projectUrl>https://github.com/JaamConsulting/Jaam.RPC</projectUrl>   
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Basic framework for method registration and dispatching</description>
     <summary>Jaam.Rpc is a framework for building RPC servers. It does not include any protocol or serialization library.</summary>
