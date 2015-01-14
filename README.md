@@ -1,4 +1,4 @@
 Jaam.RPC
 ========
 
-.Net RPC framework
+A library for building high performance, RPC libraries.
